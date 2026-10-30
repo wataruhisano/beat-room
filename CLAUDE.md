@@ -7,7 +7,8 @@ BeatmakerがArtistごとにprivateなBeat pack（Room）をsecret URLで送り�
 - [docs/PRD.md](docs/PRD.md) — 要件と未確定事項
 - [docs/MVP_SCOPE.md](docs/MVP_SCOPE.md) — scope、acceptance criteria、release gate
 - [docs/USER_FLOWS.md](docs/USER_FLOWS.md) — 画面とflow
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 暫定architecture（未確定）
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — architecture
+- [docs/adr/](docs/adr/README.md) — 技術判断の記録（ADR）
 - [docs/DATA_MODEL.md](docs/DATA_MODEL.md) — schema案とinvariants
 - [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) — Phase計画
 

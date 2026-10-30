@@ -2,19 +2,17 @@
 
 ## 1. Status
 
-この文書はMVPを開始するための**暫定architecture案**である。参照会話ではNext.js、Go API、PostgreSQL、Dockerが実装案として挙がったが、ユーザーによる最終確定はされていない。
+技術構成はPhase 0で確定した。判断の理由と捨てた選択肢は[ADR](adr/README.md)に記録する。
 
-Phase 0の最初に次を確認する。
+| 部品 | 採用 | ADR |
+|---|---|---|
+| Web | Next.js（表示のみ）/ Vercel | [0001](adr/0001-web-api-monorepo.md)、[0002](adr/0002-deployment-topology.md) |
+| API | Go / Cloud Run | [0001](adr/0001-web-api-monorepo.md)、[0002](adr/0002-deployment-topology.md) |
+| Database | PostgreSQL / Neon | [0002](adr/0002-deployment-topology.md)、[0006](adr/0006-migration-strategy.md) |
+| Object storage | Cloudflare R2（S3互換API） | [0003](adr/0003-object-storage.md) |
+| Authentication | Firebase Authentication | [0004](adr/0004-authentication.md) |
 
-- Next.js + Go APIの分離構成を採用するか
-- deployment provider
-- object storage / CDN
-- authentication provider
-- 月額予算と想定traffic
-
-これらを確認するまではprovider固有の実装を増やさない。
-
-## 2. Proposed system shape
+## 2. System shape
 
 ```text
 Beatmaker browser ─┐
@@ -54,9 +52,9 @@ Artist browser ────┘                     │
 - upload/downloadは短命signed URLまたはAPI proxyを利用
 - permanent public object URLは使用しない
 
-## 3. Suggested repository layout
+## 3. Repository layout
 
-monorepoを採用する場合の一例。確定ではない。
+monorepoを採用する（[ADR 0001](adr/0001-web-api-monorepo.md)）。
 
 ```text
 /
@@ -67,12 +65,12 @@ monorepoを採用する場合の一例。確定ではない。
 │  ├─ migrations/
 │  └─ seeds/
 ├─ docs/
-├─ infra/                  # provider確定後
+├─ infra/                  # 必要になった時に追加
 ├─ compose.yaml
 └─ README.md
 ```
 
-package manager、Go router / ORM / query generator、migration toolはPhase 0で選ぶ。
+toolの選定は[ADR 0005](adr/0005-dependency-policy.md)を参照。
 
 ## 4. API boundary
 
@@ -140,7 +138,7 @@ direct uploadとAPI proxyの選択はstorage providerとhosting制限を確認�
 - repository/query layerですべてowner scopeを必須にする
 - IDだけでresource取得する汎用関数を避ける
 - cross-tenant integration testsをCIに入れる
-- PostgreSQL Row Level Securityを使うかはdata access方式決定後に判断する
+- sqlcのqueryで`owner_user_id`を必須引数にする（[ADR 0005](adr/0005-dependency-policy.md)）。PostgreSQL Row Level Securityは現時点では採用しない
 
 ### Secret URLs
 
@@ -200,21 +198,18 @@ full secret token、Comment本文、contact値、signed URLをlogに含めない
 
 ## 10. Deployment environments
 
-- local: containersでWeb / API / PostgreSQL、storage emulatorまたはdevelopment bucket
+- local: PostgreSQLとMinIOはDocker Compose、WebとAPIは手元で直接起動（[ADR 0009](adr/0009-development-tooling.md)）
 - preview/staging: migrationとE2E確認
 - production: private storage、TLS、backup、monitoring
 
-hosting構成が未確定のため、環境名以上のprovider設計は行わない。
+providerの構成とcost guardrailは[ADR 0002](adr/0002-deployment-topology.md)を参照。
 
 ## 11. Architecture decisions to record
 
-Phase 0以降、重要判断は短いADRとして残す。
+確定した判断は[ADR一覧](adr/README.md)を参照。次の判断は該当Phaseで短いADRとして残す。
 
-1. Web / API frameworkとrepository structure
-2. Auth provider / session model
-3. Object storageとupload方式
-4. public token storage方式
-5. anonymous Room session方式
-6. Comment edit authorization方式
-7. playback progress集計方式
-8. deployment topology
+- upload方式（Phase 1）
+- public token storage方式（Phase 2）
+- anonymous Room session方式（Phase 2 / Phase 3）
+- Comment edit authorization方式（Phase 3）
+- playback progress集計方式（Phase 3）

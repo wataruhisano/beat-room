@@ -211,7 +211,7 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 実装開始前または該当Phaseの開始時に確認する。
 
 1. 認証方式（email/password、magic link、OAuth等）
-2. 暫定技術スタックを採用するか
+2. ~~暫定技術スタックを採用するか~~ → 確定（[ADR 0001](adr/0001-web-api-monorepo.md)）
 3. MP3の最大ファイルサイズ、最大再生時間、対応bitrate
 4. BPM、key、tagsの候補リストと複数選択ルール
 5. Roomが「開かれた」の技術的な判定条件と、誤アクセス時のlock解除手段の要否
@@ -219,5 +219,5 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 7. ArtistがCommentを編集・削除するための識別方法
 8. sessionの有効期間とプライバシー方針
 9. 対応言語（日本語のみ、英語のみ、両対応）
-10. デプロイ先、object storage、CDN、運用予算
+10. デプロイ先、object storage、運用予算の方針は確定（[ADR 0002](adr/0002-deployment-topology.md)、[ADR 0003](adr/0003-object-storage.md)）。CDNの要否は未確定
 11. アクセシビリティの達成基準

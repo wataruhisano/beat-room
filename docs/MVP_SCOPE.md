@@ -148,6 +148,7 @@ MVP releaseには以下をすべて満たす。
 - supported mobile / desktop browserでuploadとplaybackを確認する
 - privacy / terms上、保存するアクセス情報とMP3利用条件を説明できる
 - backup / migration / rollbackの最低限手順がある
+- product validation開始前にpublic Roomのcold startを解消している
 - known limitationsをREADMEに記載する
 
 ## 7. Product validation after release

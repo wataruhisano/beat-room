@@ -40,7 +40,7 @@
 
 - 新規環境でREADMEだけを使いlocal起動できる
 - CIが自動実行される
-- empty migrationを適用・rollbackできる
+- empty migrationをCIで適用でき、rollback方針がADRにある
 - WebからAPI healthを確認できる
 
 ## 3. Phase 1 — Account, onboarding, Beat Library, Artists
@@ -124,6 +124,7 @@
 - Beatmakerが1〜5曲のURLを作り、別browserでログインなし再生できる
 - 初回open後にRoomが固定される
 - revokeが即時に効く
+- Singapore構成（[ADR 0002](adr/0002-deployment-topology.md)）でRoom表示の遅延を実測し、DBのregionやproviderの見直し要否を判断する
 
 ## 5. Phase 3 — Reactions, comments, playback analytics
 
@@ -207,7 +208,8 @@
 - security review
 - storage lifecycle / orphan upload cleanup
 - DB backup / restore確認
-- migration / rollback rehearsal
+- backupからの復元によるrollback rehearsal
+- validation開始前のcold start解消
 - privacy policy / terms / Download説明の準備
 - production deployment
 - operational dashboard / alerts

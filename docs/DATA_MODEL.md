@@ -32,12 +32,12 @@ RoomBeat ─< Comment
 | Column | Type | Rules / purpose |
 |---|---|---|
 | id | uuid | PK |
-| auth_subject | text | UNIQUE、認証provider上のID。方式確定後に調整 |
+| auth_subject | text | UNIQUE、Firebase AuthenticationのUID（[ADR 0004](adr/0004-authentication.md)） |
 | display_name | text | nullable可否は未確定 |
 | created_at | timestamptz | required |
 | updated_at | timestamptz | required |
 
-認証方式によってemail等をここに保持するか、外部認証providerのみに置くかを決める。
+業務tableは`users.id`を参照し、`auth_subject`を持たない。emailをここへ保持するかは、login方式を決めるPhase 1で判断する。
 
 ### beats
 
