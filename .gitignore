@@ -1,0 +1,12 @@
+# 非公開の学習記録とClaudeへの個人ルール（Q12/Q14）
+docs/private/
+CLAUDE.local.md
+
+# 秘密情報（.env.exampleは公開するので除外しない）
+.env
+.env.*
+!.env.example
+
+# OSとeditorが勝手に作るfile
+.DS_Store
+.vscode/
