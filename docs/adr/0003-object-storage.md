@@ -1,6 +1,6 @@
 # ADR 0003: S3互換APIとstorage keyでMP3を管理する
 
-- Status: Accepted
+- Status: Accepted（local開発のMinIOのみ[ADR 0010](0010-local-object-storage.md)でSuperseded）
 - Date: 2026-10-30
 
 ## 背景

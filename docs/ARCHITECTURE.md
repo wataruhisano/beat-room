@@ -198,7 +198,7 @@ full secret token、Comment本文、contact値、signed URLをlogに含めない
 
 ## 10. Deployment environments
 
-- local: PostgreSQLとMinIOはDocker Compose、WebとAPIは手元で直接起動（[ADR 0009](adr/0009-development-tooling.md)）
+- local: PostgreSQLはDocker Compose、WebとAPIは手元で直接起動（[ADR 0009](adr/0009-development-tooling.md)）。object storageはPhase 1で決める（[ADR 0010](adr/0010-local-object-storage.md)）
 - preview/staging: migrationとE2E確認
 - production: private storage、TLS、backup、monitoring
 
