@@ -1,6 +1,6 @@
 # ADR 0009: 開発toolのdefault
 
-- Status: Provisional
+- Status: Provisional（Local環境のMinIOのみ[ADR 0010](0010-local-object-storage.md)でSuperseded）
 - Date: 2026-10-30
 
 ## 背景

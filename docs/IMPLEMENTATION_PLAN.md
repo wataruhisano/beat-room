@@ -52,6 +52,7 @@
 - BPM / key / tags候補
 - onboardingの終了地点とskip可否
 - Artist contact validation
+- localのobject storage（[ADR 0010](adr/0010-local-object-storage.md)）
 
 ### Tasks
 
