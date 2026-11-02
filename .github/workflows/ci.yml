@@ -31,3 +31,28 @@ jobs:
           working-directory: apps/api
       - name: Test
         run: go test ./...
+  migrations:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: beatroom
+          POSTGRES_PASSWORD: beatroom_dev
+          POSTGRES_DB: beatroom
+        ports:
+          - "5432:5432"
+        options: >-
+          --health-cmd "pg_isready -U beatroom -d beatroom"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: apps/api/go.mod
+          cache: false
+      - name: Apply migrations
+        run: go run -tags postgres github.com/golang-migrate/migrate/v4/cmd/migrate@v4.20.1 -path apps/api/migrations -database "postgres://beatroom:beatroom_dev@localhost:5432/beatroom?sslmode=disable" up
+
