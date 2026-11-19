@@ -10,6 +10,8 @@
 
 ## 2. Phase 0 — Decisions and foundation
 
+Status: 完了（2026-11-20）
+
 ### 目的
 
 開発・test・deployの最小基盤を作り、未確定な技術判断を記録する。
@@ -42,6 +44,16 @@
 - CIが自動実行される
 - empty migrationをCIで適用でき、rollback方針がADRにある
 - WebからAPI healthを確認できる
+
+### 結果
+
+- local起動はREADMEとrootの`Makefile`にまとめた
+- CIはAPI、migration、Webの3 jobで、pull requestとmainへのpushで実行する
+- migrationは`golang-migrate`のbaselineのみ。壊れたmigrationをCIが検知することを確認した
+- `/healthz`と`/readyz`の分担は[ADR 0007](adr/0007-health-checks.md)のとおり
+- logは`log/slog`のJSON出力で、request IDを付ける。URL pathはtokenを含みうるので、route patternだけを記録する
+- dark theme tokensは仮の値。最終的なdesign tokensは未確定（PRD参照）
+- local object storageはPhase 1で決める（[ADR 0010](adr/0010-local-object-storage.md)）
 
 ## 3. Phase 1 — Account, onboarding, Beat Library, Artists
 

@@ -218,6 +218,6 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 6. Like / Want thisを同一sessionから取り消せるか、重複操作をどう扱うか
 7. ArtistがCommentを編集・削除するための識別方法
 8. sessionの有効期間とプライバシー方針
-9. 対応言語（日本語のみ、英語のみ、両対応）
+9. 対応言語（日本語のみ、英語のみ、両対応）。Phase 0のskeletonは仮に`lang="ja"`とした
 10. デプロイ先、object storage、運用予算の方針は確定（[ADR 0002](adr/0002-deployment-topology.md)、[ADR 0003](adr/0003-object-storage.md)）。CDNの要否は未確定
 11. アクセシビリティの達成基準

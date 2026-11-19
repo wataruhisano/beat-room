@@ -187,6 +187,12 @@ MVPに必要な最低限:
 
 full secret token、Comment本文、contact値、signed URLをlogに含めない。
 
+Phase 0時点の実装:
+
+- APIは`log/slog`のJSONをstdoutへ出力し、requestごとにrequest IDを付けて`X-Request-Id`でも返す
+- access logにはURL pathではなくroute pattern（例: `GET /rooms/{token}`）を記録する
+- panicはmiddlewareで受け止め、500を返してlogに残す
+
 ## 9. Testing strategy
 
 - unit: validation、completion計算、state transition
