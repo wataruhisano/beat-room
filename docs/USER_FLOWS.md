@@ -70,7 +70,11 @@
 3. 最近作成した順またはBPM順にsortする
 4. Beatを選び詳細を開く、またはRoom作成に使う
 
-条件を組み合わせた際のAND/OR仕様は実装前に確定する。
+条件の組み合わせ:
+
+- 種類の違う条件（title、BPM、key、tags）はANDで組み合わせる
+- keyを複数選んだ場合はOR（例：`C`または`Cm`）
+- tagsを複数選んだ場合はAND（選んだtagをすべて持つBeat）
 
 ## 6. Flow D: Artist登録
 

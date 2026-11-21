@@ -71,11 +71,12 @@ Status: 完了（2026-11-20）
 - 認証: Google sign-inのみ。login状態はbrowserで扱い、Goだけが検証する。emailは保存しない（[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 - local storage: SeaweedFS。R2の固有挙動は節目で手動確認（[ADR 0012](adr/0012-local-object-storage-seaweedfs.md)）
 - upload: API経由。最大20MB、5秒〜10分、bitrate制限なし（[ADR 0013](adr/0013-mp3-upload-via-api.md)）
-- BPM / key / tags: 40〜250、24 key、固定tagsで最大5個（[ADR 0014](adr/0014-beat-metadata-candidates.md)、tags候補は確認待ち）
+- BPM / key / tags: 40〜250、24 key、固定tagsで最大5個（[ADR 0014](adr/0014-beat-metadata-candidates.md)）
 - onboarding: 初回sign up直後だけ自動遷移、スキップ可、完了後はLibrary。flagはDBに持たない
 - contact: 軽い形式check + 正規化、同じArtist内の重複は拒否
 - archive: Beat / Artistともarchived filterから復元できる
 - 送付済み/未送付filterはPhase 2に回す
+- 検索条件: 種類の違う条件はAND、keyの複数選択はOR、tagsの複数選択はAND
 
 ### Tasks
 

@@ -20,4 +20,4 @@ Status: **Accepted** = 確定 / **Provisional** = 可逆な仮決定で、後の
 | [0011](0011-login-method-and-auth-state.md) | loginはGoogleのみ、login状態はbrowserで扱う | Provisional |
 | [0012](0012-local-object-storage-seaweedfs.md) | localとCIのobject storageはSeaweedFS | Accepted |
 | [0013](0013-mp3-upload-via-api.md) | MP3はAPI経由でuploadし、server側で検証する | Accepted |
-| [0014](0014-beat-metadata-candidates.md) | BPM / key / tagsの範囲と固定候補 | Provisional（tags候補は確認待ち） |
+| [0014](0014-beat-metadata-candidates.md) | BPM / key / tagsの範囲と固定候補 | Accepted |

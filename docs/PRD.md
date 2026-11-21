@@ -217,7 +217,7 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 1. ~~認証方式~~ → Google sign-inのみ（[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 2. ~~暫定技術スタックを採用するか~~ → 確定（[ADR 0001](adr/0001-web-api-monorepo.md)）
 3. ~~MP3の最大ファイルサイズ、最大再生時間、対応bitrate~~ → 確定（[ADR 0013](adr/0013-mp3-upload-via-api.md)）
-4. ~~BPM、key、tagsの候補リストと複数選択ルール~~ → 仮決定（[ADR 0014](adr/0014-beat-metadata-candidates.md)、tags候補は確認待ち）
+4. ~~BPM、key、tagsの候補リストと複数選択ルール~~ → 確定（[ADR 0014](adr/0014-beat-metadata-candidates.md)）
 5. Roomが「開かれた」の技術的な判定条件と、誤アクセス時のlock解除手段の要否
 6. Like / Want thisを同一sessionから取り消せるか、重複操作をどう扱うか
 7. ArtistがCommentを編集・削除するための識別方法
