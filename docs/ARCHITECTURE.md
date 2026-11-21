@@ -49,7 +49,7 @@ Artist browser ────┘                     │
 
 - MP3をprivate bucket/containerに保存
 - DBにはprovider URLではなくstorage keyを保存
-- upload/downloadは短命signed URLまたはAPI proxyを利用
+- uploadはAPI経由（[ADR 0013](adr/0013-mp3-upload-via-api.md)）、再生とdownloadは短命signed URLを利用
 - permanent public object URLは使用しない
 
 ## 3. Repository layout
@@ -101,15 +101,14 @@ public endpointはtokenからRoom scopeを決め、clientが送るowner IDや任
 
 ### MP3 upload
 
-1. WebがAPIへmetadataとupload開始を要求
-2. APIがowner-scoped Beatを`pending`で作成
-3. APIが短命upload URLを返す、またはstream uploadを受ける
-4. clientがMP3を送信
-5. serverがtype / sizeを検証し、durationを取得する
-6. Beatを`ready`にする
-7. failure時は`failed`とし、retry / cleanup可能にする
+1. WebがFirebaseのID tokenを付けて、MP3とmetadataをAPIへ送る
+2. APIがtokenを検証し、request bodyを20MBまでに制限して読む
+3. APIがfile内容からMP3であることを検証し、durationを取得する
+4. APIがowner-scopedなstorage keyでobject storageへ保存する
+5. APIがBeatを利用可能な状態で保存する
+6. failure時はclientが入力値を保持したまま再試行できる。参照されないobjectはPhase 5のcleanupで扱う
 
-direct uploadとAPI proxyの選択はstorage providerとhosting制限を確認して決める。
+方式の理由は[ADR 0013](adr/0013-mp3-upload-via-api.md)を参照。
 
 ### Public Room load
 
@@ -204,7 +203,7 @@ Phase 0時点の実装:
 
 ## 10. Deployment environments
 
-- local: PostgreSQLはDocker Compose、WebとAPIは手元で直接起動（[ADR 0009](adr/0009-development-tooling.md)）。object storageはPhase 1で決める（[ADR 0010](adr/0010-local-object-storage.md)）
+- local: PostgreSQLはDocker Compose、WebとAPIは手元で直接起動（[ADR 0009](adr/0009-development-tooling.md)）。object storageはSeaweedFSをDocker Composeで起動（[ADR 0012](adr/0012-local-object-storage-seaweedfs.md)）。認証はFirebase Auth Emulator（[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 - preview/staging: migrationとE2E確認
 - production: private storage、TLS、backup、monitoring
 
@@ -214,7 +213,6 @@ providerの構成とcost guardrailは[ADR 0002](adr/0002-deployment-topology.md)
 
 確定した判断は[ADR一覧](adr/README.md)を参照。次の判断は該当Phaseで短いADRとして残す。
 
-- upload方式（Phase 1）
 - public token storage方式（Phase 2）
 - anonymous Room session方式（Phase 2 / Phase 3）
 - Comment edit authorization方式（Phase 3）

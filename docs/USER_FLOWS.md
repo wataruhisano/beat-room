@@ -35,25 +35,25 @@
 ## 3. Flow A: 初回利用
 
 1. Beatmakerがsign up / loginする
-2. 初回利用ならOnboarding uploadへ移動する
+2. 初回sign up直後ならOnboarding uploadへ移動する（スキップ可）
 3. MP3を選ぶ
 4. filenameからtitle候補を表示する
 5. Beatmakerがtitleを確認・編集する
 6. 必要ならBPM、key、tagsを候補から選ぶ
 7. 保存する
-8. 成功時、Beat Libraryまたは次の導線へ移動する
+8. 成功時、Beat Libraryへ移動し、登録したBeatを強調表示して「次はArtistを登録」と案内する
 
 ### エラー
 
 - MP3以外: 対応形式を明示し、選択し直せる
 - upload失敗: 入力値を保持し、再試行できる
 - title未入力: 保存せず、該当fieldを示す
-- 制限超過: 許容サイズまたは長さを示す（値は未確定）
+- 制限超過: 許容サイズ（20MB）または長さ（5秒〜10分）を示す（[ADR 0013](adr/0013-mp3-upload-via-api.md)）
 
-### 未確定
+### スキップと離脱
 
-- 登録直後にArtist追加またはRoom作成まで案内するか
-- Onboardingのスキップ可否
+- スキップした場合や途中で離脱した場合は、Beatが0件のLibrary / Dashboardに大きなupload導線を出す
+- onboarding完了のflagはDBに持たない。自動遷移は初回sign up直後の1回だけ
 
 ## 4. Flow B: 2曲目以降のBeat登録
 
@@ -66,7 +66,7 @@
 ## 5. Flow C: Beatを探す
 
 1. Beat Libraryを開く
-2. title search、BPM、key、tags、送付済み/未送付filterを必要に応じて使う
+2. title search、BPM、key、tags、送付済み/未送付filter（Phase 2で追加）を必要に応じて使う
 3. 最近作成した順またはBPM順にsortする
 4. Beatを選び詳細を開く、またはRoom作成に使う
 
@@ -84,7 +84,13 @@
 
 - display name必須
 - 有効なcontactが最低1件必要
-- contact typeごとの厳密なformat validationは未確定
+- contactは種類ごとに軽い形式checkと正規化を行う
+  - Instagram: `@`やprofile URLを取り除き、handleだけを保存する
+  - Discord: usernameの規則（2〜32文字、英小文字・数字・`.`・`_`）。旧形式の`name#1234`は受け付けず、必要ならOtherで入力する
+  - Email: 基本的な形式
+  - Other: 自由入力（上限200文字）
+- 同じArtistに同じtype・同じvalueのcontactは登録できない
+- 外部serviceでの存在確認は行わない
 
 ## 7. Flow E: Room作成と共有
 
@@ -196,4 +202,4 @@ Comment編集者の識別方法は未確定。Artist accountがないため、�
 2. 通常一覧と新規Room候補から除外する
 3. 過去Room、event、Comment、Artist履歴は保持する
 
-復元機能をMVPに含めるかは未確定。
+4. archived filterからarchive済みのBeat / Artistを表示し、復元できる

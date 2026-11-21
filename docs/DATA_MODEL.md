@@ -33,11 +33,11 @@ RoomBeat ─< Comment
 |---|---|---|
 | id | uuid | PK |
 | auth_subject | text | UNIQUE、Firebase AuthenticationのUID（[ADR 0004](adr/0004-authentication.md)） |
-| display_name | text | nullable可否は未確定 |
+| display_name | text | nullable。初回loginでGoogleの表示名を入れる |
 | created_at | timestamptz | required |
 | updated_at | timestamptz | required |
 
-業務tableは`users.id`を参照し、`auth_subject`を持たない。emailをここへ保持するかは、login方式を決めるPhase 1で判断する。
+業務tableは`users.id`を参照し、`auth_subject`を持たない。emailは保存しない（[ADR 0011](adr/0011-login-method-and-auth-state.md)）。
 
 ### beats
 
@@ -46,14 +46,14 @@ RoomBeat ─< Comment
 | id | uuid | PK |
 | owner_user_id | uuid | FK users、required |
 | title | text | required |
-| bpm | smallint | nullable、妥当範囲は未確定 |
-| musical_key | text | nullable、許容値を制約 |
+| bpm | smallint | nullable、40〜250（[ADR 0014](adr/0014-beat-metadata-candidates.md)） |
+| musical_key | text | nullable、24 keyのcanonical表記に制約 |
 | duration_ms | integer | required、serverで取得 |
 | storage_key | text | required、object storageの内部key |
 | original_filename | text | required |
 | mime_type | text | `audio/mpeg` を基本 |
 | byte_size | bigint | required |
-| upload_status | enum | `pending / ready / failed` |
+| upload_status | enum | `pending / ready / failed`。API経由upload（[ADR 0013](adr/0013-mp3-upload-via-api.md)）での要否はschema実装時に確定 |
 | archived_at | timestamptz | nullable |
 | created_at | timestamptz | required |
 | updated_at | timestamptz | required |
@@ -69,7 +69,7 @@ RoomBeat ─< Comment
 | category | text | nullable。mood等の分類候補 |
 | is_active | boolean | 候補として表示するか |
 
-候補を全ユーザー共通にするかuser-definedを許すかは未確定。MVPで固定候補のみならseed dataでよい。
+MVPは全ユーザー共通の固定候補のみで、seed dataで投入する。categoryは`genre / mood`。1 Beatあたり最大5個（[ADR 0014](adr/0014-beat-metadata-candidates.md)）。
 
 ### beat_tags
 
@@ -104,7 +104,7 @@ RoomBeat ─< Comment
 | is_primary | boolean | 主要連絡先 |
 | created_at | timestamptz | required |
 
-applicationまたはtransactionでactive Artistに最低1件のcontactを保証する。
+applicationまたはtransactionでactive Artistに最低1件のcontactを保証する。valueは正規化して保存し、UNIQUE `(artist_id, type, value)`で重複を防ぐ。
 
 ### rooms
 

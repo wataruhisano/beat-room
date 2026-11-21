@@ -17,3 +17,7 @@ Status: **Accepted** = 確定 / **Provisional** = 可逆な仮決定で、後の
 | [0008](0008-event-collection.md) | 将来の推薦に向けたevent収集の範囲 | Accepted |
 | [0009](0009-development-tooling.md) | 開発toolのdefault | Provisional（MinIOのみADR 0010でSuperseded） |
 | [0010](0010-local-object-storage.md) | MinIOをやめ、localのobject storageはPhase 1で決める | Accepted |
+| [0011](0011-login-method-and-auth-state.md) | loginはGoogleのみ、login状態はbrowserで扱う | Provisional |
+| [0012](0012-local-object-storage-seaweedfs.md) | localとCIのobject storageはSeaweedFS | Accepted |
+| [0013](0013-mp3-upload-via-api.md) | MP3はAPI経由でuploadし、server側で検証する | Accepted |
+| [0014](0014-beat-metadata-candidates.md) | BPM / key / tagsの範囲と固定候補 | Provisional（tags候補は確認待ち） |

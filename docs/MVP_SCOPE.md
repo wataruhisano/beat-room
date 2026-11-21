@@ -10,7 +10,7 @@ MVPは次のloopが本番環境で成立する状態とする。
 
 ### Foundation
 
-- Beatmaker authentication（方式は未確定）
+- Beatmaker authentication（Google sign-in、[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 - multi-tenant data isolation
 - responsive web application
 - production deployment

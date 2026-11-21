@@ -67,20 +67,22 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 
 - 複数Beatmakerが利用できるmulti-tenant構成とする
 - 各BeatmakerのBeats、Artists、Rooms、analyticsを他ユーザーから分離する
-- ログイン方法は未確定
+- ログインはGoogle sign-inのみ（[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 
 ### 7.2 初回オンボーディング
 
 - 初回ログイン後、空のDashboardだけを表示せず、最初のBeat 1曲のアップロードへ案内する
 - アップロード完了をオンボーディングの最低完了条件とする
-- オンボーディングの具体的な画面数とスキップ可否は未確定
+- オンボーディングへの自動遷移は初回sign up直後だけとし、スキップできる。完了後はBeat Libraryへ移動する
+- スキップした場合や途中で離脱した場合は、Beatが0件の画面に大きなupload導線を出す。オンボーディング完了のflagはDBに持たない
 
 ### 7.3 Beat
 
 - MVPの音声形式はMP3のみ
 - titleは必須。初期値はファイル名から生成し、編集可能にする
 - BPM、key、tagsは任意
-- BPM、key、tagsは自由入力を主にせず、候補選択を中心にする
+- BPM、key、tagsは自由入力を主にせず、候補選択を中心にする（範囲と候補は[ADR 0014](adr/0014-beat-metadata-candidates.md)）
+- MP3は最大20MB、5秒〜10分。bitrateは制限しない（[ADR 0013](adr/0013-mp3-upload-via-api.md)）
 - cover画像はMVP対象外
 - Beatをarchivedにしても、過去Roomと反応履歴は保持する
 
@@ -88,9 +90,10 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 
 - table形式で表示する
 - title、BPM、key、tagsで検索または絞り込みできる
-- 「送ったことがある / ない」で絞り込みできる
+- 「送ったことがある / ない」で絞り込みできる（Room実装後のPhase 2で追加）
 - 最近作成した順、BPM順で並べ替えできる
 - archived Beatは通常一覧から除外し、必要に応じて履歴上で表示する
+- archived filterからarchive済みのBeatを表示し、復元できる
 
 ### 7.5 Artist CRM
 
@@ -101,7 +104,8 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 - Artist detailの上部で最終送信日を目立たせる
 - 履歴はRoom単位の時系列で表示し、折りたためる
 - 累計送付曲数を表示する
-- Artistをarchivedにしても履歴を保持する
+- Artistをarchivedにしても履歴を保持する。Beatと同様に復元できる
+- contactは種類ごとに軽い形式checkと正規化を行い、同じArtist内の重複を拒否する
 
 ### 7.6 Room作成・管理
 
@@ -210,10 +214,10 @@ ArtistはMVP上のログインユーザーではない。反応は「当該Artis
 
 実装開始前または該当Phaseの開始時に確認する。
 
-1. 認証方式（email/password、magic link、OAuth等）
+1. ~~認証方式~~ → Google sign-inのみ（[ADR 0011](adr/0011-login-method-and-auth-state.md)）
 2. ~~暫定技術スタックを採用するか~~ → 確定（[ADR 0001](adr/0001-web-api-monorepo.md)）
-3. MP3の最大ファイルサイズ、最大再生時間、対応bitrate
-4. BPM、key、tagsの候補リストと複数選択ルール
+3. ~~MP3の最大ファイルサイズ、最大再生時間、対応bitrate~~ → 確定（[ADR 0013](adr/0013-mp3-upload-via-api.md)）
+4. ~~BPM、key、tagsの候補リストと複数選択ルール~~ → 仮決定（[ADR 0014](adr/0014-beat-metadata-candidates.md)、tags候補は確認待ち）
 5. Roomが「開かれた」の技術的な判定条件と、誤アクセス時のlock解除手段の要否
 6. Like / Want thisを同一sessionから取り消せるか、重複操作をどう扱うか
 7. ArtistがCommentを編集・削除するための識別方法
